@@ -27,12 +27,12 @@ public class MySQLTableCreation {
 			
 			// Step 3 Create new tables
 			sql = "CREATE TABLE items ("
-					+ "item_id VARCHAR(255) NOT NULL,"
+					+ "item_id INT NOT NULL AUTO_INCREMENT,"
 					+ "user_id VARCHAR(255) NOT NULL,"
 //					+ "name VARCHAR(255),"
 					+ "content VARCHAR(255),"
 //					+ "time VARCHAR(255),"
-					+ "checked TinyInt(1) NOT NULL,"
+//					+ "checked TinyInt(1) NOT NULL,"
 					+ "PRIMARY KEY (item_id)"
 					+ ")";
 			statement.executeUpdate(sql);

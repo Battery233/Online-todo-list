@@ -46,7 +46,7 @@ public interface DBConnection {
 	 * @param userId
 	 * @return set of item id
 	 */
-	public Set<String> getItemIds(String userId);
+	public Set<Integer> getItemIds(String userId);
 	
 	/**
 	 * Gets item set based on item id

@@ -9,7 +9,7 @@ public class Item {
 	//private String name;
 	private String content;
 	//private String time;
-	private int checked;
+	//private int checked;
 	
 	/**
 	 * This is a builder pattern in Java.
@@ -20,7 +20,7 @@ public class Item {
 		//this.name = builder.name;
 		this.content = builder.content;
 		//this.time = builder.time;
-		this.checked = builder.checked;
+		//this.checked = builder.checked;
 	}
 	
 	public String getItemId() {
@@ -43,9 +43,9 @@ public class Item {
 //		return time;
 //	}
 
-	public int isChecked() {
-		return checked;
-	}
+//	public int isChecked() {
+//		return checked;
+//	}
 	
 	public JSONObject toJSONObject() {
 		JSONObject obj = new JSONObject();
@@ -55,7 +55,7 @@ public class Item {
 //			obj.put("name", name);
 			obj.put("content", content);
 //			obj.put("time", time);
-			obj.put("checked", checked);
+//			obj.put("checked", checked);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -68,7 +68,7 @@ public class Item {
 		//private String name;
 		private String content;
 		//private String time;
-		private int checked;
+//		private int checked;
 		
 		
 		public ItemBuilder setItemId(String itemId) {
@@ -91,10 +91,10 @@ public class Item {
 //			this.time = time;
 //			return this;
 //		}
-		public ItemBuilder setChecked(int checked) {
-			this.checked = checked;
-			return this;
-		}
+//		public ItemBuilder setChecked(int checked) {
+//			this.checked = checked;
+//			return this;
+//		}
 		
 		public Item build() {
 			return new Item(this);

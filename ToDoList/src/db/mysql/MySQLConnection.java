@@ -44,14 +44,14 @@ public class MySQLConnection implements DBConnection {
 	  		return;
 		}
 		try {
-	  		 String sql = "INSERT IGNORE INTO items VALUES (?, ?, ?, ?)";
+	  		 String sql = "INSERT IGNORE INTO items VALUES (?, ?, ?)";
 	  		 PreparedStatement ps = conn.prepareStatement(sql);
-	  		 ps.setString(1, item.getItemId());
+	  		 ps.setString(1, null);
 	  		 ps.setString(2, item.getUserId());
 	  		 //ps.setString(3, item.getName());
 	  		 ps.setString(3, item.getContent());
 	  		 //ps.setString(5, item.getTime());
-	  		 ps.setInt(4, item.isChecked());
+	  		 //ps.setInt(4, item.isChecked());
 	  		 ps.execute();
 	  		
 	  	 } catch (Exception e) {
@@ -66,15 +66,15 @@ public class MySQLConnection implements DBConnection {
 	  		return;
 		}
 		try {
-	  		 String sql = "UPDATE items SET content = ?, checked = ?"
+	  		 String sql = "UPDATE items SET content = ?"
 	  		 		+ " WHERE user_id = ? AND item_id = ?";
 	  		 PreparedStatement ps = conn.prepareStatement(sql);
 	  		 //ps.setString(1, item.getName());
 	  		 ps.setString(1, item.getContent());
 	  		 //ps.setString(3, item.getTime());
-	  		 ps.setInt(2, item.isChecked());
-	  		 ps.setString(3, item.getUserId());
-	  		 ps.setString(4, item.getItemId());
+	  		 //ps.setInt(2, item.isChecked());
+	  		 ps.setString(2, item.getUserId());
+	  		 ps.setInt(3, Integer.parseInt(item.getItemId()));
 	  		 ps.executeUpdate();
 	  		
 	  	 } catch (Exception e) {
@@ -91,7 +91,7 @@ public class MySQLConnection implements DBConnection {
 		try {
 			String sql = "DELETE FROM items WHERE item_id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, itemId);
+			ps.setInt(1, Integer.parseInt(itemId));
 			ps.execute();
 			
 		} catch (Exception e) {
@@ -123,11 +123,11 @@ public class MySQLConnection implements DBConnection {
 //	}
 
 	@Override
-	public Set<String> getItemIds(String userId) {
+	public Set<Integer> getItemIds(String userId) {
 		if (conn == null) {
 			return new HashSet<>();
 		}
-		Set<String> Items = new HashSet<>();
+		Set<Integer> Items = new HashSet<>();
 		try {
 			String sql = "SELECT item_id FROM items WHERE user_id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -136,7 +136,7 @@ public class MySQLConnection implements DBConnection {
 			ResultSet rs = stmt.executeQuery();
 			
 			while (rs.next()) {
-				String itemId = rs.getString("item_id");
+				Integer itemId = rs.getInt("item_id");
 				Items.add(itemId);
 			}
 			
@@ -154,13 +154,13 @@ public class MySQLConnection implements DBConnection {
 		}
 		
 		Set<Item> Items = new HashSet<>();
-		Set<String> itemIds = getItemIds(userId);
+		Set<Integer> itemIds = getItemIds(userId);
 		
 		try {
 			String sql = "SELECT * FROM items WHERE item_id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			for (String itemId : itemIds) {
-				stmt.setString(1, itemId);
+			for (int itemId : itemIds) {
+				stmt.setInt(1, itemId);
 				
 				ResultSet rs = stmt.executeQuery();
 				
@@ -172,7 +172,7 @@ public class MySQLConnection implements DBConnection {
 					//builder.setName(rs.getString("name"));
 					builder.setContent(rs.getString("content"));
 					//builder.setTime(rs.getString("time"));
-					builder.setChecked(rs.getInt("checked"));
+					//builder.setChecked(rs.getInt("checked"));
 					
 					Items.add(builder.build());
 				}

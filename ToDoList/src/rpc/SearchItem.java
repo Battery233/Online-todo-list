@@ -64,24 +64,44 @@ public class SearchItem extends HttpServlet {
 		try {
 	  		 JSONObject input = RpcHelper.readJSONObject(request);
 
-	  		 String itemId = input.getString("item_id");
-	  		 
-	  		 ItemBuilder builder = new ItemBuilder();
-	  		 builder.setItemId(input.getString("item_id"));
-			 builder.setUserId(input.getString("user_id"));
-			 //builder.setName(input.getString("name"));
-			 builder.setContent(input.getString("content"));
-			 //builder.setTime(input.getString("time"));
-			 builder.setChecked(input.getInt("checked"));
-			 
-			 Set<String> itemIds = connection.getItemIds(input.getString("user_id"));
-			 Item item = builder.build();
-			 
-			 if (itemIds.contains(itemId)) {
+	  		 if (input.has("item_id")) {
+	  			 //Integer itemId = Integer.parseInt(input.getString("item_id"));
+		  		 
+		  		 ItemBuilder builder = new ItemBuilder();
+		  		 builder.setItemId(input.getString("item_id"));
+				 builder.setUserId(input.getString("user_id"));
+				 //builder.setName(input.getString("name"));
+				 builder.setContent(input.getString("content"));
+				 //builder.setTime(input.getString("time"));
+				 //builder.setChecked(input.getInt("checked"));
+				 Item item = builder.build();
 				 connection.updateItems(item);
-			 } else {
+	  		 } else {
+	  			 ItemBuilder builder = new ItemBuilder();
+	  			 builder.setUserId(input.getString("user_id"));
+				 //builder.setName(input.getString("name"));
+				 builder.setContent(input.getString("content"));
+				 Item item = builder.build();
 				 connection.addItems(item);
-			 }
+	  		 }
+//	  		 Integer itemId = Integer.parseInt(input.getString("item_id"));
+//	  		 
+//	  		 ItemBuilder builder = new ItemBuilder();
+//	  		 builder.setItemId(input.getString("item_id"));
+//			 builder.setUserId(input.getString("user_id"));
+//			 //builder.setName(input.getString("name"));
+//			 builder.setContent(input.getString("content"));
+//			 //builder.setTime(input.getString("time"));
+//			 //builder.setChecked(input.getInt("checked"));
+			 
+//			 Set<Integer> itemIds = connection.getItemIds(input.getString("user_id"));
+//			 Item item = builder.build();
+//			 
+//			 if (itemIds.contains(itemId)) {
+//				 connection.updateItems(item);
+//			 } else {
+//				 connection.addItems(item);
+//			 }
 			 
 	  		 RpcHelper.writeJsonObject(response, new JSONObject().put("result", "SUCCESS"));
 	  		

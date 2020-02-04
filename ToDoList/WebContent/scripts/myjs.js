@@ -3,7 +3,21 @@ $("input[type='text']").on("keypress", function(){
 		if ($(this).val() === '') {
 			alert("Please write something!");
         } else {
-        	$("ul").append("<li><span><i class='fa fa-trash-o'></i></span>" + $(this).val() + "</li>");
+        	$("ul").append("<li>" + "      " + $(this).val() + "      " + "<span><i class='fa fa-trash-o'></i></span></li>");
+        	var user_id = "1111";
+        	var content = $(this).val();
+        	var req = JSON.stringify({
+        	      user_id: user_id,
+        	      content: content
+        	    });
+        	var url = './main';
+    		var params = 'user_id=' + user_id;
+    		fetch(url + '?' + params, {
+    			method: 'POST',
+    			body: req
+    		}).then(function(response) {
+    			return response.json;
+    		})
         }
 		
 		$(this).val("");
@@ -15,6 +29,21 @@ $(document).on("click", "li", function(){
 
 $(document).on("click", "li span", function(){
 	$(this).parent().fadeOut(function(){
+//		var url = './main';
+//		var params = 'user_id=' + user_id;
+//		var user_id = "1111";
+//    	var content = $(this).val();
+//    	var req = JSON.stringify({
+//    		  item_id: 
+//    	      user_id: user_id,
+//    	      content: content
+//    	    });
+//		fetch(url + '?' + params, {
+//			method: 'DELETE',
+//			body: req
+//		}).then(function(response) {
+//			return response.json;
+//		})
 		$(this).remove();
 	});
 })
@@ -51,7 +80,6 @@ $("h1 i").click(function(){
 		var url = './main';
 		var params = 'user_id=' + user_id;
 		var data = null;
-		console.log('hi');
 		fetch(url + '?' + params, {
 			method: 'GET',
 		})
@@ -87,15 +115,15 @@ $("h1 i").click(function(){
 		      id: 'item-' + item_id,
 		      className: 'item'
 		    });
+		
 		li.dataset.item_id = item_id;
-	    li.dataset.checked = item.ckecked;
 	    
 	    var section = $create('span');
 	    var trash = $create('i', {
 	        className: 'fa fa-trash-o'
 	      });
 	    section.appendChild(trash);
-	    li.innerHTML = "   " + item.content + "   ";
+	    li.innerHTML = "      " + item.content + "      ";
 	    li.appendChild(section);
 	    itemList.appendChild(li);
 	}
