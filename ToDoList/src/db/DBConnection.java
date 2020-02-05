@@ -1,6 +1,6 @@
 package db;
 
-import java.util.Set;
+import java.util.List;
 
 import entity.Item;
 
@@ -46,7 +46,7 @@ public interface DBConnection {
 	 * @param userId
 	 * @return set of item id
 	 */
-	public Set<Integer> getItemIds(String userId);
+	public List<Integer> getItemIds(String userId);
 	
 	/**
 	 * Gets item set based on item id
@@ -54,7 +54,7 @@ public interface DBConnection {
 	 * @param itemId
 	 * @return set of item
 	 */
-	public Set<Item> getItems(String userId);
+	public List<Item> getItems(String userId);
 
 	/**
 	 * Get full name of a user. (This is not needed for main course, just for demo

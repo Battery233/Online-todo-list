@@ -5,8 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import db.DBConnection;
 import entity.Item;
@@ -123,11 +124,11 @@ public class MySQLConnection implements DBConnection {
 //	}
 
 	@Override
-	public Set<Integer> getItemIds(String userId) {
+	public List<Integer> getItemIds(String userId) {
 		if (conn == null) {
-			return new HashSet<>();
+			return new ArrayList<>();
 		}
-		Set<Integer> Items = new HashSet<>();
+		List<Integer> items = new ArrayList<>();
 		try {
 			String sql = "SELECT item_id FROM items WHERE user_id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -137,24 +138,25 @@ public class MySQLConnection implements DBConnection {
 			
 			while (rs.next()) {
 				Integer itemId = rs.getInt("item_id");
-				Items.add(itemId);
+				items.add(itemId);
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		return Items;
+		Collections.sort(items);
+		return items;
 	}
 	
 	@Override
-	public Set<Item> getItems(String userId) {
+	public List<Item> getItems(String userId) {
 		if (conn == null) {
-			return new HashSet<>();
+			return new ArrayList<>();
 		}
 		
-		Set<Item> Items = new HashSet<>();
-		Set<Integer> itemIds = getItemIds(userId);
+		List<Item> Items = new ArrayList<>();
+		List<Integer> itemIds = getItemIds(userId);
 		
 		try {
 			String sql = "SELECT * FROM items WHERE item_id = ?";

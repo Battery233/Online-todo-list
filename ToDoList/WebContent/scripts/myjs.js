@@ -29,21 +29,22 @@ $(document).on("click", "li", function(){
 
 $(document).on("click", "li span", function(){
 	$(this).parent().fadeOut(function(){
-//		var url = './main';
-//		var params = 'user_id=' + user_id;
-//		var user_id = "1111";
-//    	var content = $(this).val();
-//    	var req = JSON.stringify({
-//    		  item_id: 
-//    	      user_id: user_id,
-//    	      content: content
-//    	    });
-//		fetch(url + '?' + params, {
-//			method: 'DELETE',
-//			body: req
-//		}).then(function(response) {
-//			return response.json;
-//		})
+		var url = './main';
+		var user_id = "1111";
+		var params = 'user_id=' + user_id;
+		var item_id = $(this).attr("data-item_id");
+    	var content = $(this).val();
+    	var req = JSON.stringify({
+    		  item_id: item_id,
+    	      user_id: user_id,
+    	      content: content
+    	    });
+		fetch(url + '?' + params, {
+			method: 'DELETE',
+			body: req
+		}).then(function(response) {
+			return response.json;
+		})
 		$(this).remove();
 	});
 })
@@ -90,7 +91,7 @@ $("h1 i").click(function(){
 		.then(items => {
 			console.log(items);
 			if (!items || items.length === 0) {
-				showWarningMessage('No nearby item.');
+				showWarningMessage('No to-do items.');
 			} else {
 				listItems(items);
 			}

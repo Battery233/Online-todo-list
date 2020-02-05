@@ -1,7 +1,7 @@
 package rpc;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,7 +40,7 @@ public class SearchItem extends HttpServlet {
 		String userId = "1111";
 		DBConnection connection = DBConnectionFactory.getConnection();
 		try {
-			Set<Item> items = connection.getItems(userId);
+			List<Item> items = connection.getItems(userId);
 			
 			JSONArray array = new JSONArray();
 			for (Item item : items) {
