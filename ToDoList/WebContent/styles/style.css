@@ -33,6 +33,7 @@ ul {
 	padding: 0;
 }
 
+
 #container li {
 	cursor: pointer;
 	background: #e5f2ff;
@@ -70,16 +71,29 @@ input {
 .slide {
 	display: none;
 }
-li：hover b {
+/*li：hover b {
 	cursor: pointer；
 }
-li span {
+*/.delete {
 	background: #e74c3c;
 /*	margin-top: -15px;*/
 	color: white;
 	height: 50px;
 	display: inline-block;
-	margin-right: 10px;
+/*	margin-right: 10px;*/
+	width: 0;
+	transition: all .6s;
+	text-align: center;
+	opacity: 0;
+}
+
+.edit {
+/*	background: #e74c3c;*/
+/*	margin-top: -1115px;*/
+	color: black;
+	height: 50px;
+	display: inline-block;
+    margin-right: 5px;
 	width: 0;
 	transition: all .6s;
 	text-align: center;
@@ -87,6 +101,7 @@ li span {
 }
 
 li:hover span {
-	width: 80px;
+	width: 50px;
+	margin-right: 5px;
 	opacity: 1;
 }

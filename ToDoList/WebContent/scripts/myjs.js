@@ -3,7 +3,7 @@ $("input[type='text']").on("keypress", function(){
 		if ($(this).val() === '') {
 			alert("Please write something!");
         } else {
-        	$("ul").append("<li>" + "      " + $(this).val() + "      " + "<span><i class='fa fa-trash-o'></i></span></li>");
+        	$("ul").append("<li>" + $(this).val() +  "<span class = 'edit'><i class='fa fa-edit'></i></span><span class = 'delete'><i class='fa fa-trash-o'></i></span></li>");
         	var user_id = "1111";
         	var content = $(this).val();
         	var req = JSON.stringify({
@@ -27,7 +27,7 @@ $(document).on("click", "li", function(){
 	$(this).toggleClass("done");
 });
 
-$(document).on("click", "li span", function(){
+$(document).on("click", "li span.delete", function(){
 	$(this).parent().fadeOut(function(){
 		var url = './main';
 		var user_id = "1111";
@@ -47,9 +47,38 @@ $(document).on("click", "li span", function(){
 		})
 		$(this).remove();
 	});
-})
+});
+
 $("h1 i").click(function(){
 	$(".slide").slideToggle();
+});
+
+
+$(document).on("click", "li span.edit", function(){
+	$(this).parent("li").html('<input type="text" value="' + $(this).parent("li").text() + '">');
+	document.getElementById("content").disabled = true;
+		$("input[type='text']").on("keypress", function(){
+		if (event.which == 13){
+          var item_id = $(this).parent().attr("data-item_id");
+          //$(this).parent("li").html($(this).val() + '<span class = "edit"><i class="fa fa-edit"></i></span><span class = "delete"><i class="fa fa-trash-o"></i></span>');
+          var url = './main';
+  		  var user_id = "1111";
+  		  var params = 'user_id=' + user_id;
+  		  var content = $(this).val();
+  		  var req = JSON.stringify({
+  			  item_id: item_id,
+  			  user_id: user_id,
+  			  content: content
+  		  	});
+  		  fetch(url + '?' + params, {
+  			  method: 'POST',
+  			  body: req
+  		  }).then(function(response) {
+			return response.json;
+  		  })
+  		  document.getElementById("content").disabled = false;
+		}    
+    });
 });
 
 (function() {
@@ -119,13 +148,23 @@ $("h1 i").click(function(){
 		
 		li.dataset.item_id = item_id;
 	    
-	    var section = $create('span');
+	    var edit_section = $create('span', {
+	    	className: 'edit'
+	      });
+	    var edit = $create('i', {
+	        className: 'fa fa-edit'
+	      });
+	    edit_section.appendChild(edit);
+	    var trash_section = $create('span', {
+	    	className: 'delete'
+	      });
 	    var trash = $create('i', {
 	        className: 'fa fa-trash-o'
 	      });
-	    section.appendChild(trash);
+	    trash_section.appendChild(trash);
 	    li.innerHTML = "      " + item.content + "      ";
-	    li.appendChild(section);
+	    li.appendChild(edit_section);
+	    li.appendChild(trash_section);
 	    itemList.appendChild(li);
 	}
 	loadItems();
