@@ -39,11 +39,9 @@ public class RpcHelper {
 				sBuilder.append(line);
 			}
 			return new JSONObject(sBuilder.toString());
-			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		
 		return new JSONObject();
 	}
 }
