@@ -31,15 +31,6 @@ public interface DBConnection {
 	 */
 	public void deleteItems(String itemId);
 	
-//	/**
-//	 * Check if the item exists under the user
-//	 * 
-//	 * @param userId
-//	 * @param itemId
-//	 * @return true or false
-//	 */
-//	public boolean containsItem(String userId, String itemId);
-	
 	/**
 	 * Gets item id based on user id
 	 * 

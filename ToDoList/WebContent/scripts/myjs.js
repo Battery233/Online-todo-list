@@ -3,13 +3,13 @@
  * 
  */
 $("#content").on("keypress", function(){
-	if(event.which == 13){
+	if(event.which == 13){ // action when enter is pressed
 		if ($(this).val() === '') {
 			alert("Please write something!");   // alert if there is no input.
         } else {
         	// append a new to-do record.
         	$("ul").append("<li>" + $(this).val() +  "<span class = 'edit'><i class='fa fa-edit'></i></span><span class = 'delete'><i class='fa fa-trash-o'></i></span></li>");
-        	var user_id = "1111";
+        	var user_id = "1111"; //Default user id
         	var content = $(this).val();
         	
         	// build JSON file
@@ -20,7 +20,7 @@ $("#content").on("keypress", function(){
         	var url = './main';
     		var params = 'user_id=' + user_id;
     		
-    		//Send JSON to the server.
+    		//Send JSON to the server, use POST method
     		fetch(url + '?' + params, {
     			method: 'POST',
     			body: req
@@ -29,7 +29,7 @@ $("#content").on("keypress", function(){
     		})
         }
 		
-		$(this).val("");
+		$(this).val(""); //Clear the in-box after the operations
 	}
 });
 
@@ -38,9 +38,10 @@ $("#content").on("keypress", function(){
  * 
  */
 $(document).on("click", "li span.delete", function(){
-	$(this).parent().fadeOut(function(){
+	$(this).parent().fadeOut(function(){  //set visual effects
 		var url = './main';
-		var user_id = "1111";
+		var user_id = "1111";  // default user
+		//set payload for the JSON
 		var params = 'user_id=' + user_id;
 		var item_id = $(this).attr("data-item_id");
     	var content = $(this).val();
@@ -49,7 +50,7 @@ $(document).on("click", "li span.delete", function(){
     	      user_id: user_id,
     	      content: content
     	    });
-    	//Send JSON to the server.
+    	//Send JSON to the server and remove the record
 		fetch(url + '?' + params, {
 			method: 'DELETE',
 			body: req
@@ -66,7 +67,7 @@ $(document).on("click", "li span.delete", function(){
  * 
  */
 $("h1 i").click(function(){
-	$(".slide").slideToggle();
+	$(".slide").slideToggle();	//slide effects
 });
 
 /**
@@ -79,12 +80,13 @@ $(document).on("click", "li span.edit", function(){
 		$(this).parent("li").html('<input type="text"' + ' id=' + liInputId + ' ' +'value="' + $(this).parent("li").text() + '">');
 		// catch user's input
 		$("#" + liInputId).on("keypress", function(){
-		if (event.which == 13){
+		if (event.which == 13){ // When receive an enter key press
           var item_id = $(this).parent().attr("data-item_id");
           var url = './main';
-  		  var user_id = "1111";
+  		  var user_id = "1111"; //Default user
   		  var params = 'user_id=' + user_id;
   		  var content = $(this).val();
+  		//set payload for the JSON
   		  var req = JSON.stringify({
   			  item_id: item_id,
   			  user_id: user_id,
@@ -125,7 +127,7 @@ $(document).on("click", "li span.edit", function(){
 	function showWarningMessage(msg) {
 	    var itemList = document.querySelector('#item-list');
 	    itemList.innerHTML = '<p class="notice"><i class="fa fa-exclamation-triangle"></i> ' +
-	      msg + '</p>';
+	      msg + '</p>'; //print the message
 	  }
 	/**
 	 * Show the error message.
@@ -133,7 +135,7 @@ $(document).on("click", "li span.edit", function(){
 	function showErrorMessage(msg) {
 		  var itemList = document.querySelector('#item-list');
 		  itemList.innerHTML = '<p class="notice"><i class="fa fa-exclamation-circle"></i> ' +
-		    msg + '</p>';
+		    msg + '</p>';  //print the message
 	   }
 	
 	/**
@@ -153,14 +155,10 @@ $(document).on("click", "li span.edit", function(){
 		})
 		.then(items => {
 			console.log(items);
-			if (!items || items.length === 0) {
-				//showWarningMessage('No to-do items.');
-			} else {
-				listItems(items);
-			}
+			listItems(items); // record the item and print to the webpage
 		})
 		.catch(err => {
-			console.error(err);
+			console.error(err);  //print error
 		})
 	}
 	
@@ -172,7 +170,7 @@ $(document).on("click", "li span.edit", function(){
 	    itemList.innerHTML = ''; // clear current results
 
 	    for (var i = 0; i < items.length; i++) {
-	      addItem(itemList, items[i]);
+	      addItem(itemList, items[i]); //List all the todo content
 	    }
 	  }
 	
@@ -188,7 +186,7 @@ $(document).on("click", "li span.edit", function(){
 		      className: 'item'
 		    });
 		
-		li.dataset.item_id = item_id;
+		li.dataset.item_id = item_id; // set id
 	    
 		// create edit and delete icons.
 	    var edit_section = $create('span', {

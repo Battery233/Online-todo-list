@@ -2,3 +2,5 @@
 .DS_Store
 ToDoList/build/
 *.class
+ToDoList/.DS_Store
+.idea/
