@@ -17,20 +17,19 @@ public class MySQLConnection implements DBConnection {
 	
 	private Connection conn;
 	
-	// setup connection to the db
 	public MySQLConnection() {
 	  	 try {
 	  		 Class.forName("com.mysql.cj.jdbc.Driver").getConstructor().newInstance();
 	  		 conn = DriverManager.getConnection(MySQLDBUtil.URL);
+	  		
 	  	 } catch (Exception e) {
 	  		 e.printStackTrace();
 	  	 }
 	}
 
-	//close connection
 	@Override
 	public void close() {
-		if (conn != null) { //make sure connection exists
+		if (conn != null) {
 	  		 try {
 	  			 conn.close();
 	  		 } catch (Exception e) {
@@ -39,7 +38,6 @@ public class MySQLConnection implements DBConnection {
 	  	 }
 	}
 
-	//add items
 	@Override
 	public void addItems(Item item) {
 		if (conn == null) {
@@ -47,19 +45,21 @@ public class MySQLConnection implements DBConnection {
 	  		return;
 		}
 		try {
-			//insert user id, item id, item content to db
 	  		 String sql = "INSERT IGNORE INTO items VALUES (?, ?, ?)";
 	  		 PreparedStatement ps = conn.prepareStatement(sql);
 	  		 ps.setString(1, null);
 	  		 ps.setString(2, item.getUserId());
+	  		 //ps.setString(3, item.getName());
 	  		 ps.setString(3, item.getContent());
-	  		 ps.execute();	
+	  		 //ps.setString(5, item.getTime());
+	  		 //ps.setInt(4, item.isChecked());
+	  		 ps.execute();
+	  		
 	  	 } catch (Exception e) {
 	  		 e.printStackTrace();
 	  	 }
 	}
 	
-	//modify todo item
 	@Override
 	public void updateItems(Item item) {
 		if (conn == null) {
@@ -67,20 +67,22 @@ public class MySQLConnection implements DBConnection {
 	  		return;
 		}
 		try {
-			//find and modify
 	  		 String sql = "UPDATE items SET content = ?"
 	  		 		+ " WHERE user_id = ? AND item_id = ?";
 	  		 PreparedStatement ps = conn.prepareStatement(sql);
+	  		 //ps.setString(1, item.getName());
 	  		 ps.setString(1, item.getContent());
+	  		 //ps.setString(3, item.getTime());
+	  		 //ps.setInt(2, item.isChecked());
 	  		 ps.setString(2, item.getUserId());
 	  		 ps.setInt(3, Integer.parseInt(item.getItemId()));
 	  		 ps.executeUpdate();
+	  		
 	  	 } catch (Exception e) {
 	  		 e.printStackTrace();
 	  	 }
 	}
 
-	//remove a single todo item
 	@Override
 	public void deleteItems(String itemId) {
 		if (conn == null) {
@@ -92,12 +94,35 @@ public class MySQLConnection implements DBConnection {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, Integer.parseInt(itemId));
 			ps.execute();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	//Use the list to store itemID.
+//	@Override
+//	public boolean containsItem(String userId, String itemId) {
+//		if (conn == null) {
+//			return false;
+//		}
+//		try {
+//			String sql = "SELECT item_id FROM items WHERE user_id = ? AND item_id = ?";
+//			PreparedStatement stmt = conn.prepareStatement(sql);
+//			stmt.setString(1, userId);
+//			stmt.setString(2, itemId);
+//			
+//			ResultSet rs = stmt.executeQuery();
+//			
+//			if (rs != null) {
+//				return true;
+//			}
+//			
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return false;
+//	}
+
 	@Override
 	public List<Integer> getItemIds(String userId) {
 		if (conn == null) {
@@ -105,45 +130,52 @@ public class MySQLConnection implements DBConnection {
 		}
 		List<Integer> items = new ArrayList<>();
 		try {
-			//add result to the data structure
 			String sql = "SELECT item_id FROM items WHERE user_id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, userId);
 			
 			ResultSet rs = stmt.executeQuery();
-			//add all the items to list
+			
 			while (rs.next()) {
 				Integer itemId = rs.getInt("item_id");
 				items.add(itemId);
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		Collections.sort(items);
 		return items;
 	}
 	
-	// get all the contents in the list
 	@Override
 	public List<Item> getItems(String userId) {
 		if (conn == null) {
 			return new ArrayList<>();
 		}
+		
 		List<Item> Items = new ArrayList<>();
 		List<Integer> itemIds = getItemIds(userId);
+		
 		try {
-			//fetch content from the db
 			String sql = "SELECT * FROM items WHERE item_id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			for (int itemId : itemIds) {
 				stmt.setInt(1, itemId);
+				
 				ResultSet rs = stmt.executeQuery();
+				
 				ItemBuilder builder = new ItemBuilder();
-				// build the item use item id user id and content
+				
 				while (rs.next()) {
 					builder.setItemId(rs.getString("item_id"));
 					builder.setUserId(rs.getString("user_id"));
-					builder.setContent(rs.getString("content"));			
+					//builder.setName(rs.getString("name"));
+					builder.setContent(rs.getString("content"));
+					//builder.setTime(rs.getString("time"));
+					//builder.setChecked(rs.getInt("checked"));
+					
 					Items.add(builder.build());
 				}
 			}
@@ -153,14 +185,12 @@ public class MySQLConnection implements DBConnection {
 		return Items;
 	}
 
-	//interface for future use
 	@Override
 	public String getFullname(String userId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	//interface for future use
 	@Override
 	public boolean verifyLogin(String userId, String password) {
 		// TODO Auto-generated method stub

@@ -36,19 +36,19 @@ public class SearchItem extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-    // To resolve get http requests
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userId = "1111"; // default user
+		String userId = "1111";
 		DBConnection connection = DBConnectionFactory.getConnection();
 		try {
-			//Connect db and make requests
 			List<Item> items = connection.getItems(userId);
+			
 			JSONArray array = new JSONArray();
 			for (Item item : items) {
 				JSONObject obj = item.toJSONObject();
 				array.put(obj);
 			}
 			RpcHelper.writeJsonArray(response, array);
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -59,27 +59,52 @@ public class SearchItem extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	//handle post request from the front end
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		DBConnection connection = DBConnectionFactory.getConnection();
 		try {
 	  		 JSONObject input = RpcHelper.readJSONObject(request);
-	  		 if (input.has("item_id")) { //search exist id, if exist, modify item		  		 
+
+	  		 if (input.has("item_id")) {
+	  			 //Integer itemId = Integer.parseInt(input.getString("item_id"));
+		  		 
 		  		 ItemBuilder builder = new ItemBuilder();
 		  		 builder.setItemId(input.getString("item_id"));
 				 builder.setUserId(input.getString("user_id"));
+				 //builder.setName(input.getString("name"));
 				 builder.setContent(input.getString("content"));
+				 //builder.setTime(input.getString("time"));
+				 //builder.setChecked(input.getInt("checked"));
 				 Item item = builder.build();
 				 connection.updateItems(item);
 	  		 } else {
-	  			 //if do not exist, create new item
 	  			 ItemBuilder builder = new ItemBuilder();
 	  			 builder.setUserId(input.getString("user_id"));
+				 //builder.setName(input.getString("name"));
 				 builder.setContent(input.getString("content"));
 				 Item item = builder.build();
 				 connection.addItems(item);
 	  		 }
+//	  		 Integer itemId = Integer.parseInt(input.getString("item_id"));
+//	  		 
+//	  		 ItemBuilder builder = new ItemBuilder();
+//	  		 builder.setItemId(input.getString("item_id"));
+//			 builder.setUserId(input.getString("user_id"));
+//			 //builder.setName(input.getString("name"));
+//			 builder.setContent(input.getString("content"));
+//			 //builder.setTime(input.getString("time"));
+//			 //builder.setChecked(input.getInt("checked"));
+			 
+//			 Set<Integer> itemIds = connection.getItemIds(input.getString("user_id"));
+//			 Item item = builder.build();
+//			 
+//			 if (itemIds.contains(itemId)) {
+//				 connection.updateItems(item);
+//			 } else {
+//				 connection.addItems(item);
+//			 }
+			 
 	  		 RpcHelper.writeJsonObject(response, new JSONObject().put("result", "SUCCESS"));
+	  		
 	  	 } catch (Exception e) {
 	  		 e.printStackTrace();
 	  	 } finally {
@@ -90,14 +115,16 @@ public class SearchItem extends HttpServlet {
 	/**
 	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
 	 */
-	// resolve remove request
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		DBConnection connection = DBConnectionFactory.getConnection();
 		try {
 	  		 JSONObject input = RpcHelper.readJSONObject(request);
+	  		 //String userId = input.getString("user_id");
 	  		 String itemId = input.getString("item_id");
+	  		
 	  		 connection.deleteItems(itemId);
 	  		 RpcHelper.writeJsonObject(response, new JSONObject().put("result", "SUCCESS"));
+	  		
 	  	 } catch (Exception e) {
 	  		 e.printStackTrace();
 	  	 } finally {
