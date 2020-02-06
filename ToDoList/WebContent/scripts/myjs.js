@@ -188,7 +188,7 @@ $(document).on("click", "li span.edit", function(){
 		
 		li.dataset.item_id = item_id; // set id
 	    
-		// create edit and delete icons.
+		// set edit and delete icons.
 	    var edit_section = $create('span', {
 	    	className: 'edit'
 	      });
