@@ -38,7 +38,12 @@ public class SearchItem extends HttpServlet {
 	 */
     // To resolve get http requests
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userId = "1111"; // default user
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			response.setStatus(403);
+			return;
+		}
+		String userId = session.getAttribute("user_id").toString(); 
 		DBConnection connection = DBConnectionFactory.getConnection();
 		try {
 			//Connect db and make requests
@@ -61,6 +66,11 @@ public class SearchItem extends HttpServlet {
 	 */
 	//handle post request from the front end
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			response.setStatus(403);
+			return;
+		}
 		DBConnection connection = DBConnectionFactory.getConnection();
 		try {
 	  		 JSONObject input = RpcHelper.readJSONObject(request);
@@ -92,6 +102,11 @@ public class SearchItem extends HttpServlet {
 	 */
 	// resolve remove request
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			response.setStatus(403);
+			return;
+		}
 		DBConnection connection = DBConnectionFactory.getConnection();
 		try {
 	  		 JSONObject input = RpcHelper.readJSONObject(request);

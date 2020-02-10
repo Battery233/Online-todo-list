@@ -1,3 +1,4 @@
+var user_id = '1111';    // default user_id
 /**
  * Add function. Use this function to add new to-do item
  * 
@@ -9,7 +10,7 @@ $("#content").on("keypress", function(){
         } else {
         	// append a new to-do record.
         	$("ul").append("<li>" + $(this).val() +  "<span class = 'edit'><i class='fa fa-edit'></i></span><span class = 'delete'><i class='fa fa-trash-o'></i></span></li>");
-        	var user_id = "1111"; //Default user id
+        	//var user_id = "1111"; //Default user id
         	var content = $(this).val();
         	
         	// build JSON file
@@ -40,7 +41,7 @@ $("#content").on("keypress", function(){
 $(document).on("click", "li span.delete", function(){
 	$(this).parent().fadeOut(function(){  //set visual effects
 		var url = './main';
-		var user_id = "1111";  // default user
+		//var user_id = "1111";  // default user
 		//set payload for the JSON
 		var params = 'user_id=' + user_id;
 		var item_id = $(this).attr("data-item_id");
@@ -83,7 +84,7 @@ $(document).on("click", "li span.edit", function(){
 		if (event.which == 13){ // When receive an enter key press
           var item_id = $(this).parent().attr("data-item_id");
           var url = './main';
-  		  var user_id = "1111"; //Default user
+  		  //var user_id = "1111"; //Default user
   		  var params = 'user_id=' + user_id;
   		  var content = $(this).val();
   		//set payload for the JSON
@@ -106,7 +107,220 @@ $(document).on("click", "li span.edit", function(){
 });
 
 (function() {
-	var user_id = '1111';    // default user_id
+	//var user_id = '1111';    // default user_id
+
+	/**
+	   * Initialize major event handlers
+	   */
+	function init() {
+	  // register event listeners
+	  document.querySelector('#login-form-btn').addEventListener('click', onSessionInvalid);
+	  document.querySelector('#login-btn').addEventListener('click', login);
+	  document.querySelector('#register-form-btn').addEventListener('click', showRegisterForm);    
+	  document.querySelector('#register-btn').addEventListener('click', register);
+	  //document.querySelector('#container').addEventListener('click', loadNearbyItems);
+      validateSession();
+	    // onSessionValid({"user_id":"1111","name":"John Smith","status":"OK"});
+	}
+
+	/**
+	 * Session
+	 */
+	function validateSession() {
+	    onSessionInvalid();
+	    // The request parameters
+	    var url = './login';
+	    var req = JSON.stringify({});
+	    
+	    fetch(url, {
+	    	method: 'GET'
+	    })
+	    .then(res => {
+	    	return res.json();
+	    })
+	    .then(res => {
+	    	if (res.status === 'OK') {
+	    		onSessionValid(res);
+	    	}
+	    })
+	    
+	  }
+
+	  function onSessionValid(res) {
+	    user_id = res.user_id;
+	    user_fullname = res.name;
+
+	    var loginForm = document.querySelector('#login-form');
+	    var registerForm = document.querySelector('#register-form');
+	    var itemList = document.querySelector('#container');
+	    var avatar = document.querySelector('#avatar');
+	    var welcomeMsg = document.querySelector('#welcome-msg');
+	    var logoutBtn = document.querySelector('#logout-link');
+
+	    welcomeMsg.innerHTML = 'Welcome, ' + user_fullname;
+
+	    showElement(itemList);
+	    showElement(avatar);
+	    showElement(welcomeMsg);
+	    showElement(logoutBtn, 'inline-block');
+	    hideElement(loginForm);
+	    hideElement(registerForm);
+
+	    loadItems();
+	    //initGeoLocation();
+	  }
+
+	  function onSessionInvalid() {
+	    var loginForm = document.querySelector('#login-form');
+	    var registerForm = document.querySelector('#register-form');
+	    var itemList = document.querySelector('#container');
+	    var avatar = document.querySelector('#avatar');
+	    var welcomeMsg = document.querySelector('#welcome-msg');
+	    var logoutBtn = document.querySelector('#logout-link');
+
+	    hideElement(itemList);
+	    hideElement(avatar);
+	    hideElement(logoutBtn);
+	    hideElement(welcomeMsg);
+	    hideElement(registerForm);
+
+	    clearLoginError();
+	    showElement(loginForm);
+	  }
+	  
+	  function hideElement(element) {
+		element.style.display = 'none';
+	  }
+
+	  function showElement(element, style) {
+		 var displayStyle = style ? style : 'block';
+		 element.style.display = displayStyle;
+	  }
+		  
+	   function showRegisterForm() {
+		 var loginForm = document.querySelector('#login-form');
+		 var registerForm = document.querySelector('#register-form');
+		 var itemList = document.querySelector('#container');
+		 var avatar = document.querySelector('#avatar');
+		 var welcomeMsg = document.querySelector('#welcome-msg');
+		 var logoutBtn = document.querySelector('#logout-link');
+
+	     hideElement(itemList);
+         hideElement(avatar);
+	     hideElement(logoutBtn);
+    	 hideElement(welcomeMsg);
+		 hideElement(loginForm);
+		    
+		 clearRegisterResult();
+		 showElement(registerForm);
+	   } 
+	
+	   
+	// -----------------------------------
+	// Login
+	// -----------------------------------
+
+	   function login() {
+		 //e.preventDefault();
+	     var username = document.querySelector('#username').value;
+	     var password = document.querySelector('#password').value;
+	     password = md5(username + md5(password));
+
+	     // The request parameters
+	     var url = './login';
+	     var req = JSON.stringify({
+	       user_id : username,
+	       password : password,
+	     });
+	     
+	     fetch(url, {
+	    	   method: 'POST',
+	    	   body: req
+	       })
+	       .then(res => {
+	    	   if (res.status !== 200) {
+	    		   throw new Error("not 200");
+	    	   }
+	    	   return res.json()
+	       })
+	       .then(res => {
+	    	   if (res.status === 'OK') {
+	    		   onSessionValid(res);
+	    	   }
+	       })
+	       .catch(err => {
+	    	   console.log(1);
+	    	   showLoginError();
+	       })
+	   }
+
+	   function showLoginError() {
+	     document.querySelector('#login-error').innerHTML = 'Invalid username or password';
+	   }
+
+	   function clearLoginError() {
+	     document.querySelector('#login-error').innerHTML = '';
+	   }
+	   
+	   
+	// -----------------------------------
+	// Register
+	// -----------------------------------
+
+	   function register() {
+	     var username = document.querySelector('#register-username').value;
+	     var password = document.querySelector('#register-password').value;
+	     var firstName = document.querySelector('#register-first-name').value;
+	     var lastName = document.querySelector('#register-last-name').value;
+	     
+	     if (username === "" || password == "" || firstName === "" || lastName === "") {
+	     	showRegisterResult('Please fill in all fields');
+	     	return
+	     }
+	     
+	     if (username.match(/^[a-z0-9_]+$/) === null) {
+	     	showRegisterResult('Invalid username');
+	     	return
+	     }
+	     
+	     password = md5(username + md5(password));
+
+	     // The request parameters
+	     var url = './register';
+	     var req = JSON.stringify({
+	       user_id : username,
+	       password : password,
+	       first_name: firstName,
+	       last_name: lastName,
+	     });
+	     
+	     fetch(url, {
+	    	 method: 'POST',
+	    	 body: req
+	     })
+	     .then(res => {
+	    	 return res.json();
+	     })
+	     .then(res => {
+	    	 if (res.status === 'OK') {
+	    		 showRegisterResult('Succesfully registered');
+	    	 } else {
+	    		 showRegisterResult('User already existed');
+	    	 }
+	     })
+	     .catch(err => {
+	    	 showRegisterResult('Failed to register');
+	     })
+	     
+	   }
+
+	   function showRegisterResult(registerMessage) {
+	     document.querySelector('#register-result').innerHTML = registerMessage;
+	   }
+
+	   function clearRegisterResult() {
+	     document.querySelector('#register-result').innerHTML = '';
+	   }
 	
 	/**
 	 * Use to create a new DOM element
@@ -210,5 +424,6 @@ $(document).on("click", "li span.edit", function(){
 	    li.appendChild(trash_section);
 	    itemList.appendChild(li);
 	}
-	loadItems();
+	init();
+	//loadItems();
 }) ();

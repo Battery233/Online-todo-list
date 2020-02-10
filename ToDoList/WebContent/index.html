@@ -8,9 +8,40 @@
   <link type="text/css" rel="stylesheet" href="styles/font-awesome.min.css">
   <script type="text/javascript" src="scripts/jquery.min.js"></script>
   <script type="text/javascript" src="scripts/myjs.js"></script>
+  <script type="text/javascript" src="scripts/md5.js"></script>
 </head>
 <body>
 
+<header class="top-header">
+    <span id="welcome-msg"></span>
+    <a id="logout-link" href="logout">Logout</a>
+    <i id="avatar" class="avatar fa fa-user fa-2x"></i>
+  </header>
+  
+  <div id="login-form">
+        <label for="username">Username:</label>
+        <input id="username" name="username" type="text">
+        <label for="password">Password:</label>
+        <input id="password" name="password" type="password">
+        <button id="register-form-btn">New User? Register</button>
+        <button id="login-btn">Login</button>
+        <p id="login-error"></p>
+      </div>
+      
+  <div id="register-form">
+        <label for="username">Username: *</label>
+        <input id="register-username" name="username" type="text">
+        <label for="password">Password: *</label>
+        <input id="register-password" name="password" type="password">
+        <label for="first-name">First Name: *</label>
+        <input id="register-first-name" name="first-name" type="text">
+        <label for="last-name">Last Name: *</label>
+        <input id="register-last-name" name="last-name" type="text">
+        <button id="login-form-btn">Back to Login</button>
+        <button id="register-btn">Register</button>
+        <p id="register-result"></p>
+      </div>
+      
 <!-- Set container style -->
 <div id="container">
 	<h1>To Do App<i class="fa fa-plus"></i></h1>
