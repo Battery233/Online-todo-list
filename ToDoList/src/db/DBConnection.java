@@ -31,6 +31,15 @@ public interface DBConnection {
 	 */
 	public void deleteItems(String itemId);
 	
+//	/**
+//	 * Check if the item exists under the user
+//	 * 
+//	 * @param userId
+//	 * @param itemId
+//	 * @return true or false
+//	 */
+//	public boolean containsItem(String userId, String itemId);
+	
 	/**
 	 * Gets item id based on user id
 	 * 
@@ -65,5 +74,16 @@ public interface DBConnection {
 	 * @return boolean
 	 */
 	public boolean verifyLogin(String userId, String password);
+	
+	/**
+	 * Register one user
+	 * 
+	 * @param userId
+	 * @param password
+	 * @param firstname
+	 * @param lastname
+	 * @return boolean
+	 */
+	public boolean registerUser(String userId, String password, String firstname, String lastname);
 
 }
