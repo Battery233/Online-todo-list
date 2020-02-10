@@ -369,7 +369,11 @@ $(document).on("click", "li span.edit", function(){
 		})
 		.then(items => {
 			console.log(items);
-			listItems(items); // record the item and print to the webpage
+			// record the item and print to the webpage
+			if (!items || items.length === 0) {
+			} else {
+				listItems(items);
+			}
 		})
 		.catch(err => {
 			console.error(err);  //print error
