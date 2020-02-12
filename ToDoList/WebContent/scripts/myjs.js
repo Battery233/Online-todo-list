@@ -255,7 +255,7 @@ $(document).on("click", "li span.edit", function(){
 	   }
 
 	   function showLoginError() {
-	     document.querySelector('#login-error').innerHTML = 'Invalid username or password';
+	     document.querySelector('#login-error').innerHTML = '<div class = "bar error">Invalid username or password</div>';
 	   }
 
 	   function clearLoginError() {
@@ -274,12 +274,12 @@ $(document).on("click", "li span.edit", function(){
 	     var lastName = document.querySelector('#register-last-name').value;
 	     
 	     if (username === "" || password == "" || firstName === "" || lastName === "") {
-	     	showRegisterResult('Please fill in all fields');
+	     	showRegisterResult('<div class="bar error">Please fill in all fields</div>');
 	     	return
 	     }
 	     
 	     if (username.match(/^[a-z0-9_]+$/) === null) {
-	     	showRegisterResult('Invalid username');
+	     	showRegisterResult('<div class="bar error">Invalid username</div>');
 	     	return
 	     }
 	     
@@ -303,13 +303,13 @@ $(document).on("click", "li span.edit", function(){
 	     })
 	     .then(res => {
 	    	 if (res.status === 'OK') {
-	    		 showRegisterResult('Succesfully registered');
+	    		 showRegisterResult('<div class="bar error">Succesfully registered</div>');
 	    	 } else {
-	    		 showRegisterResult('User already existed');
+	    		 showRegisterResult('<div class="bar error">User already existed</div>');
 	    	 }
 	     })
 	     .catch(err => {
-	    	 showRegisterResult('Failed to register');
+	    	 showRegisterResult('<div class="bar error">Failed to register</div>');
 	     })
 	     
 	   }
