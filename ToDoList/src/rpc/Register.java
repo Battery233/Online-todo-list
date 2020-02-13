@@ -14,6 +14,7 @@ import db.DBConnectionFactory;
 
 /**
  * Servlet implementation class Register
+ * Post requests for account registering purpose.
  */
 @WebServlet("/register")
 public class Register extends HttpServlet {

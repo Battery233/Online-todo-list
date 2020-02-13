@@ -1,5 +1,7 @@
 var user_id = '1111';    // default user_id
 /**
+ * 
+ * The major .js file for the logics of the todo list.
  * Add function. Use this function to add new to-do item
  * 
  */

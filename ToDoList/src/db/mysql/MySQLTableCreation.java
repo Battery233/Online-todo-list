@@ -4,7 +4,12 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.Connection;
 
-// The tool class for create a table in the db
+/**
+ * The tool class for creating a table in the db
+ * and setup corresponding schema.
+ * Run the main method the first time when the database is
+ * created and connected.
+ */
 public class MySQLTableCreation {
 	public static void main(String[] args) {
 		try {

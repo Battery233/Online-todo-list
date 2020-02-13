@@ -1,4 +1,6 @@
-ï»¿
+/**
+* The main css style file for the todo list page.
+*/
 body{
 	font-family:"Comic Sans MS", cursive, sans-serif;
 	background: linear-gradient(to left, #ffd89b , #19547b);
@@ -108,8 +110,8 @@ input {
 .slide {
 	display: none;
 }
-/*liï¼šhover b {
-	cursor: pointerï¼›
+/*li£ºhover b {
+	cursor: pointer£»
 }
 */.delete {
 	background: #e74c3c;

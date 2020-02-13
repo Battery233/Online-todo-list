@@ -21,6 +21,10 @@ import entity.Item.ItemBuilder;
 
 /**
  * Servlet implementation class SearchItem
+ * 
+ * The class for displaying all the todo list items 
+ * to the todo list. Will read the items from HTTP connections
+ * or make post requests for item editing and removing.
  */
 @WebServlet("/main")
 public class SearchItem extends HttpServlet {

@@ -2,6 +2,9 @@ package db;
 
 import db.mysql.MySQLConnection;
 
+/**
+ * Tool class for database type selection
+ */
 public class DBConnectionFactory {
 	// use sql as default db
 	private static final String DEFAULT_DB = "mysql";

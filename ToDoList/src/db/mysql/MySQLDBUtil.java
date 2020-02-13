@@ -1,5 +1,8 @@
 package db.mysql;
 
+/**
+ * data base configuration information.
+ */
 public class MySQLDBUtil {
 	private static final String HOSTNAME = "localhost"; //host address
 	private static final String PORT_NUM = "3306"; // sql port

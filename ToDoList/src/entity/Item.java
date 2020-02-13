@@ -3,6 +3,12 @@ package entity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Todo list item object.
+ * Every todo list entry is an Item object.
+ * This object contains all the information of the record, 
+ * including ItemId, user Id and todo content.
+ */
 public class Item {
 	// Three fields for each record
 	private String itemId;

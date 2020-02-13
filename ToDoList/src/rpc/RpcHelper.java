@@ -1,6 +1,7 @@
 package rpc;
 
 import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -10,6 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * Json tool class.
+ * For reading and writing json objects
+ */
 public class RpcHelper {
 
 	// Writes a JSONArray to http response.

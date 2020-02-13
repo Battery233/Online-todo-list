@@ -15,6 +15,7 @@ import db.DBConnectionFactory;
 
 /**
  * Servlet implementation class Login
+ * Get and post requests for login purpose.
  */
 @WebServlet("/login")
 public class Login extends HttpServlet {

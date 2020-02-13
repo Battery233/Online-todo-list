@@ -4,6 +4,10 @@ import java.util.List;
 
 import entity.Item;
 
+/**
+ * The tool interface for establishing connections with databases.
+ *
+ */
 public interface DBConnection {
 	/**
 	 * Close the connection.

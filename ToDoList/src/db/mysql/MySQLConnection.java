@@ -1,6 +1,7 @@
 package db.mysql;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +13,11 @@ import java.util.List;
 import db.DBConnection;
 import entity.Item;
 import entity.Item.ItemBuilder;
+
+/**
+ * Tool class for database item adding, editing, deleting
+ * and reading.
+ */
 
 public class MySQLConnection implements DBConnection {
 	
@@ -153,6 +159,7 @@ public class MySQLConnection implements DBConnection {
 		return Items;
 	}
 
+	//Read user name from database for displaying above the todo list
 	@Override
 	public String getFullname(String userId) {
 		if (conn == null) {
@@ -194,13 +201,13 @@ public class MySQLConnection implements DBConnection {
 		return false;
 	}
 	
+	//Create a new user
 	@Override
 	public boolean registerUser(String userId, String password, String firstname, String lastname) {
 		if (conn == null) {
 			System.err.println("DB connection failed");
 			return false;
 		}
-
 		try {
 			String sql = "INSERT IGNORE INTO users VALUES (?, ?, ?, ?)";
 			PreparedStatement ps = conn.prepareStatement(sql);
